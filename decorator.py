@@ -20,13 +20,14 @@ def log(func : types.FunctionType):
     return wrapper
 
 def ellapsed_time(func : types.FunctionType):
-    def wrapper_t(*args, **kw):
+    print('first layer of ellapsed_time')
+    def wrapper(*args, **kw):
+        print('second layer of ellapsed_time')
         t = time.time()
-        print('start time is %s' % t)
-        #print('%s ran for %s ms' % (func.__name__, 1000*(time.time() - t)))
-        return func(*args, **kw)
-    print('end time is %s' % time.time())
-    return wrapper_t
+        result = func(*args, **kw)
+        print('%s executed in %s ms' % (func.__name__, 1000.0*(time.time() - t)))
+        return result
+    return wrapper
 
 @log
 def current_time():
@@ -34,8 +35,8 @@ def current_time():
     #return datetime.datetime.now()
     
 @ellapsed_time
-def something(n : float):
-    time.sleep(n)
+def something(dt):
+    time.sleep(dt)
         
 
 if __name__ == '__main__':
@@ -47,8 +48,8 @@ if __name__ == '__main__':
     print('declare f as something')
     f = something
     print('call f i.e. something')
-    f(0.5)
+    f(0.6)
     
-    print(f.__name__)
-    print(type([]))
-    print(type(current_time))
+#    print(f.__name__)
+#    print(type([]))
+#    print(type(current_time))
