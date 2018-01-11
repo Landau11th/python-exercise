@@ -10,19 +10,20 @@ import pandas as pd
 import scipy.stats as stats
 import matplotlib.pyplot as plt
 
-stockdata = pd.read_csv('^DJI.csv')
-stock_return = np.log(stockdata['Adj Close'] / stockdata['Open'])
+from pandas_stock_data import grab_data
+import datetime
 
+stockdata = grab_data('NVDA', datetime.datetime(2017,1,1))
+stock_return = np.log(stockdata['Close'] / stockdata['Open'])
+
+stock_return = stock_return[220:]
 
 #plt.plot(stockdata['Open'])
 plt.hist(stock_return)
-
-stock_return_mean = np.mean(stock_return)
-stock_return_sigma = np.std(stock_return)
-
 print(stats.describe(stock_return))
 
-print(stats.normaltest((stock_return - stock_return_mean)/stock_return_sigma))
+
+print(stats.normaltest(stock_return))
 
 #print(stock_return)
 #print(price)
